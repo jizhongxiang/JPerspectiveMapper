@@ -1,5 +1,10 @@
 package com.aopie.jpm.util;
 
+import com.aopie.jpm.model.ParseUnit;
+import com.aopie.jpm.model.PerspectiveContent;
+
+import java.util.List;
+
 /**
  * PMUtil (Perspective Mapping Utility) 是一个专门设计用于处理空间透视坐标转换和空间映射的工具类。
  * 它提供了一系列静态方法，旨在支持各种空间数据处理需求，包括但不限于透视变换、坐标映射、空间数据分析等功能。
@@ -19,5 +24,28 @@ package com.aopie.jpm.util;
  * @since 2024/3/14
  */
 public class PMUtil {
+
+    /**
+     * 根据OCR的内容初始化一个工程对象
+     *
+     * @param parseUnitList OCR解析出的内容单元列表，不能为空或包含空地解析单元
+     * @return 初始化后的PerspectiveContent对象
+     * @throws IllegalArgumentException 如果传入的解析单元列表为空或包含空地解析单元时抛出
+     */
+    public static PerspectiveContent initializeByOcr(List<ParseUnit> parseUnitList) {
+        // 检查传入的解析单元列表是否为空或空列表
+        if (parseUnitList == null || parseUnitList.isEmpty()) {
+            throw new IllegalArgumentException("parseUnitList is null or empty");
+        }
+        // 遍历列表，检查每个解析单元是否为空
+        parseUnitList.forEach(parseUnit -> {
+            if (parseUnit.isEmpty()) {
+                throw new IllegalArgumentException("parseUnit is null or empty");
+            }
+        });
+        // 创建并返回PerspectiveContent对象
+        return new PerspectiveContent(parseUnitList);
+    }
+
 
 }
