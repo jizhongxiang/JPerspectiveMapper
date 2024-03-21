@@ -3,7 +3,10 @@ package com.aopie.jpm.util;
 import com.aopie.jpm.model.ParseUnit;
 import com.aopie.jpm.model.PerspectiveContent;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * PMUtil (Perspective Mapping Utility) 是一个专门设计用于处理空间透视坐标转换和空间映射的工具类。
@@ -47,5 +50,24 @@ public class PMUtil {
         return new PerspectiveContent(parseUnitList);
     }
 
+    /**
+     * 处理大字符串中与正则表达式匹配的所有子串。
+     *
+     * @param largeString 需要处理的大字符串。
+     * @param regex       用于匹配的正则表达式。
+     * @return 匹配到的所有子串列表。
+     */
+    private static List<String> processLargeString(String largeString, String regex) {
+        List<String> matchList = new ArrayList<>();
+        // 编译正则表达式，优化匹配性能
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(largeString);
+
+        while (matcher.find()) {
+            // 将每次匹配到的子串添加到列表中
+            matchList.add(matcher.group());
+        }
+        return matchList;
+    }
 
 }
