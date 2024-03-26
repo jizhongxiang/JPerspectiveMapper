@@ -134,7 +134,7 @@ public class TempFile extends File implements AutoCloseable {
      * 生成一个临时文件路径。
      */
     private static String generateTempFilePath() {
-        return System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString();
+        return System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID();
     }
 
     /**
@@ -144,15 +144,15 @@ public class TempFile extends File implements AutoCloseable {
         if (file.exists() && !file.isDirectory()) {
             try (
                     FileInputStream inputStream = new FileInputStream(file);
-                    FileOutputStream outputStream = new FileOutputStream(this);
+                    FileOutputStream outputStream = new FileOutputStream(this)
             ) {
                 byte[] car = new byte[1024 * 1024];
-                int length = 0;
+                int length;
                 while ((length = inputStream.read(car)) > 0) {
                     outputStream.write(car, 0, length);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("从文件复制内容到临时文件时发生错误: {}", file, e);
             }
         }
         return false;
@@ -165,15 +165,15 @@ public class TempFile extends File implements AutoCloseable {
         if (fileInputStream != null) {
             try (
                     InputStream inputStream = fileInputStream;
-                    FileOutputStream outputStream = new FileOutputStream(this);
+                    FileOutputStream outputStream = new FileOutputStream(this)
             ) {
                 byte[] car = new byte[1024 * 1024];
-                int length = 0;
+                int length;
                 while ((length = inputStream.read(car)) > 0) {
                     outputStream.write(car, 0, length);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("从输入流复制内容到临时文件时发生错误: {}", fileInputStream, e);
             }
         }
         return false;
@@ -185,16 +185,16 @@ public class TempFile extends File implements AutoCloseable {
     public boolean saveTo(OutputStream outputStream) {
         if (exists() && outputStream != null) {
             try (
-                    FileInputStream inputStream = new FileInputStream(this);
+                    FileInputStream inputStream = new FileInputStream(this)
             ) {
                 byte[] batch = new byte[1014 * 1024];
-                Integer length = 0;
+                int length;
                 while ((length = inputStream.read(batch)) > 0) {
                     outputStream.write(batch, 0, length);
                 }
                 return true;
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("保存文件到指定输出流时发生错误: {}", outputStream, e);
             }
         }
         return false;
@@ -213,16 +213,16 @@ public class TempFile extends File implements AutoCloseable {
             }
             try (
                     FileInputStream inputStream = new FileInputStream(this);
-                    FileOutputStream outputStream = new FileOutputStream(path);
+                    FileOutputStream outputStream = new FileOutputStream(path)
             ) {
                 byte[] batch = new byte[1014 * 1024];
-                Integer length = 0;
+                int length;
                 while ((length = inputStream.read(batch)) > 0) {
                     outputStream.write(batch, 0, length);
                 }
                 return true;
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("保存文件到指定路径时发生错误: {}", path, e);
             }
         }
         return false;
